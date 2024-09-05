@@ -4,11 +4,12 @@ import android.app.KeyguardManager
 import android.content.Context
 import android.view.WindowManager
 import androidx.test.rule.ActivityTestRule
+import de.adorsys.android.securestoragelibrary.SecureStorage
 import de.adorsys.android.securestoragelibrary.SecureStorageException
 import org.junit.Before
 import org.junit.Rule
 
-open class SecureStorageBaseTest {
+open class SecureStorage2BaseTest {
     @Rule
     @JvmField
     var activityRule = ActivityTestRule(
@@ -18,6 +19,13 @@ open class SecureStorageBaseTest {
     @Before
     @Throws(SecureStorageException::class)
     fun setUp() {
+        // Init library parameters
+        SecureStorage.init(
+                context = activityRule.activity.applicationContext,
+                encryptionKeyAlias = "SecureStorage2Key",
+                x500Principal = "CN=SecureStorage2 , O=Adorsys GmbH & Co. KG., C=Germany"
+        )
+
         activityRule.activity.runOnUiThread {
             val keyguardManager = activityRule.activity.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
             @Suppress("DEPRECATION") val keyguardLock = keyguardManager.newKeyguardLock(Context.KEYGUARD_SERVICE)
